@@ -34,7 +34,7 @@
       "required": true,
       "title": "API Host",
       "description": "CodexLB base URL",
-      "default": "http://codex-lb-service.codex-lb.svc.cluster.local:2455",
+      "default": "http://10.43.144.227:2455",
       "placeholder": "http://codex-lb:2455"
     }
   ],

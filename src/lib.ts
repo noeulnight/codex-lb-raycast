@@ -1,7 +1,7 @@
 import { getPreferenceValues } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
 
-const { apiHost } = getPreferenceValues<{ apiHost: string }>();
+const apiHost = getPreferenceValues<{ apiHost?: string }>().apiHost?.trim() || "http://10.43.144.227:2455";
 export const ACCOUNTS_URL = `${apiHost.replace(/\/+$/, "")}/api/accounts`;
 
 type Usage = {

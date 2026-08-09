@@ -1,12 +1,14 @@
-import { Color, Icon, LaunchType, MenuBarExtra, launchCommand } from "@raycast/api";
+import { Color, Icon, LaunchType, MenuBarExtra, launchCommand, showHUD } from "@raycast/api";
 import { Account, formatTimeLeft, useAccounts } from "./lib";
 
 export default function Command() {
   const { accounts, error, isLoading, revalidate } = useAccounts();
   const poolRemaining = pooledRemainingPercent(accounts);
 
-  const openDetails = (accountId?: string) => {
-    void launchCommand({ name: "accounts", type: LaunchType.UserInitiated, context: { accountId } });
+  const openDetails = () => launchCommand({ name: "accounts", type: LaunchType.UserInitiated });
+  const refresh = async () => {
+    await revalidate();
+    await showHUD("CodexLB Refreshed");
   };
 
   return (
@@ -17,15 +19,13 @@ export default function Command() {
       isLoading={isLoading}
     >
       {error ? (
-        <MenuBarExtra.Item title="Could not load accounts" subtitle={error.message} onAction={revalidate} />
+        <MenuBarExtra.Item title="Could not load accounts" subtitle={error.message} onAction={refresh} />
       ) : (
-        accounts.map((account) => (
-          <AccountSection key={account.accountId} account={account} onOpen={() => openDetails(account.accountId)} />
-        ))
+        accounts.map((account) => <AccountSection key={account.accountId} account={account} onOpen={openDetails} />)
       )}
       <MenuBarExtra.Section>
-        <MenuBarExtra.Item title="View Details" icon={Icon.Sidebar} onAction={() => openDetails()} />
-        <MenuBarExtra.Item title="Refresh" icon={Icon.ArrowClockwise} onAction={revalidate} />
+        <MenuBarExtra.Item title="View Details" icon={Icon.Sidebar} onAction={openDetails} />
+        <MenuBarExtra.Item title="Refresh" icon={Icon.ArrowClockwise} onAction={refresh} />
       </MenuBarExtra.Section>
     </MenuBarExtra>
   );
