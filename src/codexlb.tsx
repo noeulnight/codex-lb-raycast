@@ -82,7 +82,6 @@ function AccountSection({ account, onOpen }: { account: Account; onOpen: () => v
 
 function pooledRemainingPercent(accounts: Account[]): number | null {
   const windows = [
-    ["capacityCreditsPrimary", "remainingCreditsPrimary"],
     ["capacityCreditsSecondary", "remainingCreditsSecondary"],
     ["capacityCreditsMonthly", "remainingCreditsMonthly"],
   ] as const;
